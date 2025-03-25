@@ -1,0 +1,5 @@
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+  @for (item of gifs; track $index) {
+  <gifs-gif-list-item [gif]="item"></gifs-gif-list-item>
+  }
+</div>
