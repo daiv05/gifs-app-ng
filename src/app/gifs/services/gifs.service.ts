@@ -12,7 +12,7 @@ const loadFromLocalStorage = () => {
   const searchHistoryJson = localStorage.getItem(GIF_KEY) ?? '{}';
   const gifs = JSON.parse(searchHistoryJson) as Record<string, Gif[]>;
   return gifs;
-}
+};
 
 @Injectable({ providedIn: 'root' })
 export default class GifService {
@@ -23,6 +23,22 @@ export default class GifService {
 
   //   trendingGifsLoading = signal(false);
   //   searchableGifsLoading = signal(false);
+
+  tredingGifGroup = computed<Gif[][]>(() => {
+    const groups = []
+    for (let i = 0; i < this.trendingGifs().length; i += 3) {
+      groups.push(this.trendingGifs().slice(i, i + 3));
+    }
+    return groups;
+  });
+
+  searchableGifsGroup = computed<Gif[][]>(() => {
+    const groups = []
+    for (let i = 0; i < this.searchableGifs().length; i += 3) {
+      groups.push(this.searchableGifs().slice(i, i + 3));
+    }
+    return groups;
+  });
 
   searchHistory = signal<Record<string, Gif[]>>(loadFromLocalStorage());
   searchHistoryKeys = computed(() => Object.keys(this.searchHistory()));
@@ -66,10 +82,10 @@ export default class GifService {
           return gifs;
         }),
         tap((gifs) => {
-          this.searchHistory.update((history => ({
+          this.searchHistory.update((history) => ({
             ...history,
-            [searchTerm.toLowerCase()]: gifs
-          })));
+            [searchTerm.toLowerCase()]: gifs,
+          }));
         })
       );
 
@@ -80,7 +96,14 @@ export default class GifService {
     //   });
   }
 
-  getHistoryGifs(searchTerm: string) : Gif[] {
-    return this.searchHistory()[searchTerm] ?? [];
+  getHistoryGifs(searchTerm: string): Gif[][] {
+    // return this.searchHistory()[searchTerm] ?? [];
+    const groups = []
+    const searchHistory = this.searchHistory()[searchTerm] ?? [];
+    for (let i = 0; i < searchHistory.length; i += 3) {
+      groups.push(searchHistory.slice(i, i + 3));
+    }
+    return groups;
+
   }
 }

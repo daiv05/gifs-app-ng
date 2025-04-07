@@ -24,6 +24,10 @@ export default class SearchPageComponent {
     )
   );
 
+  // gifsByKey = computed(() => {
+  //   return this.gifService.getHistoryGifs(this.searchTerm());
+  // });
+
   gifsByKey = computed(() => {
     return this.gifService.getHistoryGifs(this.searchTerm());
   });

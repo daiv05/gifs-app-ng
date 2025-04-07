@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import GifListComponent from '../../components/gif-list/gif-list.component';
 import GifService from '@app/gifs/services/gifs.service';
 import { Gif } from '@app/gifs/interfaces/gif.interfaces';
@@ -25,4 +25,13 @@ export default class SearchPageComponent {
         this.gifsSearchSignal.set(resp);
     });
   }
+
+  gifsSearchGroupSignal = computed(() => {
+    const groups = []
+    const search = this.gifsSearchSignal() ?? [];
+    for (let i = 0; i < search.length; i += 3) {
+      groups.push(search.slice(i, i + 3));
+    }
+    return groups;
+  });
 }

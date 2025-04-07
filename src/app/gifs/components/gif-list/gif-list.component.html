@@ -1,5 +1,9 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-  @for (item of gifs(); track item.id) {
-  <gif-list-item [gif]="item"></gif-list-item>
+  @for (item of gifs(); track $index) {
+  <div class="grid gap-4">
+    @for (child of item; track $index) {
+    <gif-list-item [gif]="child"></gif-list-item>
+    }
+  </div>
   }
 </div>
